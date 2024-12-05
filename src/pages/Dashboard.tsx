@@ -186,7 +186,7 @@ export default function Dashboard() {
 					<h1 className="text-xl font-bold">Search Query: {searchQuery}</h1>
 					<h1 className="text-xl font-bold">Status: {selectedStatus}</h1>
 				</div> */}
-			<div className="flex justify-center mt-10 ml-2 md:ml-4">
+			<div className="flex justify-center mt-10 ml-2 md:ml-12">
 				<CardGrid>{cards}</CardGrid>
 			</div>
 		</div>

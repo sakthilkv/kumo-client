@@ -13,6 +13,7 @@ Kumo is a **personalized tracker app** that helps you keep track of your favorit
   - Paginated results for easy browsing.
 
 - **Dashboard**:
+  ![Dashboard Preview](docs/images/dashboard.png)
 
   - Track your **Currently Watching**, **Currently Reading**, and **Currently Playing** media.
   - View **Recommendations** tailored to your preferences.

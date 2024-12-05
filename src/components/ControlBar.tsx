@@ -20,7 +20,6 @@ const ControlBar: React.FC<ControlBarProps> = ({
 	selectedStatus,
 	setSelectedStatus,
 }) => {
-
 	const categoryColors: { [key: string]: string } = {
 		movie: 'dark:text-blue-400',
 		tvseries: 'dark:text-teal-400',
