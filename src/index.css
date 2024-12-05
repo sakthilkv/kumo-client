@@ -67,3 +67,36 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+:root ::-webkit-scrollbar {
+	width: 10px;
+}
+
+:root ::-webkit-scrollbar-track {
+	background: #2c2c2c;
+}
+
+:root ::-webkit-scrollbar-thumb {
+	background: #888;
+}
+
+:root ::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Dark Theme Scrollbar */
+:root:dark ::-webkit-scrollbar {
+	width: 10px;
+}
+
+:root:dark ::-webkit-scrollbar-track {
+	background: #2c2c2c;
+}
+
+:root:dark ::-webkit-scrollbar-thumb {
+	background: #555;
+}
+
+:root:dark ::-webkit-scrollbar-thumb:hover {
+	background: #333;
+}
