@@ -1,8 +1,8 @@
-import Logo from '@/assets/logo.svg'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link, useLocation } from 'react-router-dom'
-import { Bug, LayoutDashboard, Search } from 'lucide-react'
+import { LayoutDashboard, Search } from 'lucide-react'
+import { FaSpider } from 'react-icons/fa6'
 import { ModeToggle } from '@/components/mode-toggle'
 function Header() {
 	const location = useLocation()
@@ -12,8 +12,8 @@ function Header() {
 	return (
 		<div className="flex justify-between items-center p-4 shadow-lg rounded-lg md:px-20 border-b">
 			<div className="flex gap-5   items-center">
-				<Bug />
-                <h1 className='font-bold font-mono text-lg tracking-widest'>KUMO</h1>
+				<FaSpider size={25} />
+				<h1 className="font-bold font-mono text-lg tracking-widest">KUMO</h1>
 			</div>
 			<div className="flex gap-5   items-center">
 				<Button
@@ -37,7 +37,6 @@ function Header() {
 					</Link>
 				</Button>
 
-				{/* Display only icon on mobile */}
 				<Button variant={isActive('/dashboard') ? 'default' : 'link'} asChild className="sm:hidden">
 					<Link to="/dashboard">
 						<LayoutDashboard />

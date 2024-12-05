@@ -1,17 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/mode-toggle.tsx'
 import Header from './components/header'
+import Dashboard from '@/pages/Dashboard'
+import Search from '@/pages/Search'
+
 function App() {
 	return (
-		<div>
-			<Header></Header>
-			<Button>Click me</Button>
-
-		</div>
+		<>
+			<Header />
+			<Routes>
+				<Route path="/dashboard" element={<Dashboard />} />
+				<Route path="/search" element={<Search />} />
+			</Routes>
+		</>
 	)
 }
 
