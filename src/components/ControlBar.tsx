@@ -23,7 +23,7 @@ const ControlBar: React.FC<ControlBarProps> = ({
 	return (
 		<div className="control-bar flex flex-row mt-3 w-full justify-center gap-2 sticky">
 			<Select defaultValue={selectedCategory} onValueChange={setSelectedCategory}>
-				<SelectTrigger className="w-[130px] font-medium px-2 text-sm">
+				<SelectTrigger className="w-[130px] font-medium px-2 text-sm dark:text-yellow-400">
 					<SelectValue />
 				</SelectTrigger>
 				<SelectContentComponent />

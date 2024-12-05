@@ -10,7 +10,7 @@ function Header() {
 	const isActive = (path: string) => location.pathname === path
 
 	return (
-		<div className="flex justify-between items-center p-4 shadow-lg rounded-lg md:px-20 border-b">
+		<div className="flex justify-between items-center p-4  rounded-lg md:px-20 border-b-2">
 			<div className="flex gap-5   items-center">
 				<FaSpider size={25} />
 				<h1 className="font-bold font-mono text-lg tracking-widest">KUMO</h1>
