@@ -6,6 +6,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
+				geist: ['"GeistSans"', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
