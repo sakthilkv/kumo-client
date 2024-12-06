@@ -16,7 +16,7 @@ const Card: React.FC<{ item: MediaContent }> = ({ item }) => {
 		<Link to={`/${item.media_type}/${item.id}`} className="flex items-center" key={item.id}>
 			<div className="flex flex-col items-left">
 				<div
-					className="p-4 h-80 w-44 sm:w-1/2 md:w-48 border rounded-lg shadow-md flex items-center justify-center"
+					className="p-4 h-72 w-40 sm:w-1/2 md:h-80 md:w-48 border rounded-lg shadow-md flex items-center justify-center"
 					style={{
 						backgroundImage: `url('https://image.tmdb.org/t/p/w600_and_h900_bestv2${item.poster_url}')`,
 						backgroundSize: 'cover',
@@ -41,6 +41,7 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		const movieIds = [
+			'tt29623480',
 			'tt0111161',
 			'tt0068646',
 			'tt0468569',
@@ -104,7 +105,7 @@ export default function Dashboard() {
 					<h1 className="text-xl font-bold">Search Query: {searchQuery}</h1>
 					<h1 className="text-xl font-bold">Status: {selectedStatus}</h1>
 				</div> */}
-			<div className="flex justify-center mt-10 ml-2 md:ml-12">
+			<div className="flex justify-center mt-10 ml-4 md:ml-12">
 				<CardGrid>
 					{mediaContent.map((item) => (
 						<Card key={item.id} item={item} />
