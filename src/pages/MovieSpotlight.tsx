@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react'
+import SelectStatus from '@/components/SelectStatus'
+import { Select, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
 	FaUser,
 	FaCalendar,
@@ -10,7 +13,8 @@ import {
 	FaLaugh,
 } from 'react-icons/fa'
 import { FaFilm, FaMusic, FaBook, FaHeart } from 'react-icons/fa'
-import { GeistSans } from 'geist/font/sans'
+import { Button } from '@/components/ui/button'
+
 interface GenresParserProps {
 	genres: string[]
 }
@@ -34,15 +38,29 @@ const GenresParser: React.FC<GenresParserProps> = ({ genres }) => {
 				<div key={index} className="flex items-center">
 					{genreIcons[genre] || <FaFilm />}
 					<span className="md:text-lg ml-2 font-geist">{genre}</span>
-					{index < genres.length - 1 && <span className="mx-1">,</span>}{' '}
+					{index < genres.length - 1 && <span className="mx-1">,</span>}
 				</div>
 			))}
 		</div>
 	)
 }
-export default function MovieSpotlight() {
-	const id = window.location.href.split('/').filter(Boolean).pop()
+
+const MovieSpotlight: React.FC = () => {
+	const [selectedStatus, setSelectedStatus] = useState<string>('')
+	const [movieId, setMovieId] = useState<string | null>(null)
+	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
+	useEffect(() => {
+		// Safely access window.location
+		const id = window.location.href.split('/').filter(Boolean).pop()
+		setMovieId(id || null)
+	}, [])
+
+	const handleStatusChange = (value: string) => {
+		setSelectedStatus(value)
+		setIsButtonDisabled(value === 'none') // Enable button if value is not 'none'
+	}
 	const genres = ['Action', 'Comedy', 'Romance', 'Drama', 'Horror']
+
 	return (
 		<>
 			<div className="flex flex-col md:flex-row w-full">
@@ -50,12 +68,12 @@ export default function MovieSpotlight() {
 					<img
 						src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg"
 						alt="Image"
-						className="w-[30rem] rounded-md h-auto "
+						className="w-[30rem] rounded-md h-auto"
 					/>
 				</div>
 				<div className="flex flex-col items-left ml-10 mt-14 gap-2">
 					<div className="md:w-[80rem] overflow-hidden">
-						<span className="text-xl md:text-5xl mt-3 font-semibold w-96 text-balance ">
+						<span className="text-xl md:text-5xl mt-3 font-semibold w-96 text-balance">
 							Spider-Man: Into the Spider-Verse
 						</span>
 					</div>
@@ -86,8 +104,21 @@ export default function MovieSpotlight() {
 							inadvertently transported to his dimension.
 						</span>
 					</div>
+
+					<div className="flex flex-row items-center gap-3 mt-3 border rounded-lg w-fit p-3">
+						<span>Status:</span>
+						<Select defaultValue="none" onValueChange={handleStatusChange}>
+							<SelectTrigger className="w-fit font-medium px-2 text-sm border">
+								<SelectValue placeholder="Select" />
+							</SelectTrigger>
+							<SelectStatus />
+						</Select>
+						<Button disabled={isButtonDisabled}>Save</Button>
+					</div>
 				</div>
 			</div>
 		</>
 	)
 }
+
+export default MovieSpotlight
