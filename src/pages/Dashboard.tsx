@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import ControlBar from '@/components/ControlBar'
 import CardGrid from '@/components/CardGrid'
 import { Link } from 'react-router-dom'
+import { apiUrl, UserID } from '@/lib/Constants'
 interface MediaContent {
 	id: string
 	media_type: string
@@ -40,53 +41,49 @@ export default function Dashboard() {
 	const [mediaContent, setMediaContent] = useState<MediaContent[]>([])
 
 	useEffect(() => {
-		const movieIds = [
-			'tt29623480',
-			'tt0111161',
-			'tt0068646',
-			'tt0468569',
-			'tt0071562',
-			'tt0050083',
-			'tt0108052',
-			'tt0816692',
-			'tt5311514',
-			'tt0167260',
-			'tt0137523',
-			'tt0133093',
-			'tt0080684',
-			'tt0099685',
-			'tt0076759',
-			'tt9426210',
-			'tt0086190',
-			'tt0109830',
-			'tt0134074',
-			'tt0253474',
-			'tt0211915',
-			'tt0102926',
-			'tt0110912',
-			'tt0266543',
-			'tt0372784',
-			'tt0038650',
-			'tt0114369',
-			'tt0325980',
-			'tt0482571',
-			'tt0317248',
-			'tt0120737',
-		]
+		const fetchDashboard = async () => {
+			try {
+				const response = await fetch(`${apiUrl}user/dashboard?media_type=${selectedCategory}`, {
+					headers: {
+						uid: UserID,
+					},
+				})
+				if (!response.ok) {
+					throw new Error('Failed to fetch media IDs')
+				}
 
-		const fetchData = async () => {
-			const data = await Promise.all(
-				movieIds.map(async (id) => {
-					const response = await fetch(`http://192.168.0.104:5000/api/media/min/movie/${id}`)
-					const json = await response.json()
-					return json
-				}),
-			)
-			setMediaContent(data)
+				const userData = await response.json()
+				const mediaData = await Promise.all(
+					userData['results'].map(async (record: { media_id: any; status: any; progress: any }) => {
+						const mediaResponse = await fetch(
+							`${apiUrl}media/min/${selectedCategory}/${record['media_id']}`,
+						)
+						if (!mediaResponse.ok) {
+							throw new Error('Failed to fetch media IDs')
+						}
+						const mediaJson = await mediaResponse.json()
+
+						return {
+							id: mediaJson.id,
+							media_type: mediaJson.media_type,
+							plot: mediaJson.plot,
+							poster_url: mediaJson.poster_url,
+							title: mediaJson.title,
+							year: mediaJson.year,
+							status: record.status,
+							progress: record.progress,
+						}
+					}),
+				)
+
+				setMediaContent(mediaData)
+			} catch (error) {
+				console.error('Error fetching media data:', error)
+			}
 		}
 
-		fetchData()
-	}, [])
+		fetchDashboard()
+	}, [selectedCategory])
 
 	return (
 		<div className="flex flex-col justify-center w-full pl-2 pr-2 m-0 p-0 mb-5">
