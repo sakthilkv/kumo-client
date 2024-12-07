@@ -14,6 +14,7 @@ import {
 } from 'react-icons/fa'
 import { FaFilm, FaMusic, FaBook, FaHeart } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
+import TimeInput from '@/components/TImeInput'
 
 interface GenresParserProps {
 	genres: string[]
@@ -46,18 +47,18 @@ const GenresParser: React.FC<GenresParserProps> = ({ genres }) => {
 }
 
 const MovieSpotlight: React.FC = () => {
-	const [selectedStatus, setSelectedStatus] = useState<string>('')
-	const [movieId, setMovieId] = useState<string | null>(null)
+	const [, setSelectedStatus] = useState<string>('')
+	const [, setMovieId] = useState<string | null>(null)
+
 	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
 	useEffect(() => {
-		// Safely access window.location
 		const id = window.location.href.split('/').filter(Boolean).pop()
 		setMovieId(id || null)
 	}, [])
 
 	const handleStatusChange = (value: string) => {
 		setSelectedStatus(value)
-		setIsButtonDisabled(value === 'none') // Enable button if value is not 'none'
+		setIsButtonDisabled(value === 'none')
 	}
 	const genres = ['Action', 'Comedy', 'Romance', 'Drama', 'Horror']
 
@@ -113,6 +114,11 @@ const MovieSpotlight: React.FC = () => {
 							</SelectTrigger>
 							<SelectStatus />
 						</Select>
+						<TimeInput
+							onTimeChange={function (time: string): void {
+								throw new Error('Function not implemented.')
+							}}
+						/>
 						<Button disabled={isButtonDisabled}>Save</Button>
 					</div>
 				</div>

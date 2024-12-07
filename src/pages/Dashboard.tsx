@@ -53,7 +53,6 @@ export default function Dashboard() {
 			'tt0167260',
 			'tt0137523',
 			'tt0133093',
-			'tt0169547',
 			'tt0080684',
 			'tt0099685',
 			'tt0076759',
@@ -73,13 +72,12 @@ export default function Dashboard() {
 			'tt0482571',
 			'tt0317248',
 			'tt0120737',
-			'tt0816692',
 		]
 
 		const fetchData = async () => {
 			const data = await Promise.all(
 				movieIds.map(async (id) => {
-					const response = await fetch(`http://192.168.0.104:5000/media/info/movie/${id}`)
+					const response = await fetch(`http://192.168.0.104:5000/api/media/min/movie/${id}`)
 					const json = await response.json()
 					return json
 				}),
