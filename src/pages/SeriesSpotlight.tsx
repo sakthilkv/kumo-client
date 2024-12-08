@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import SelectStatus from '@/components/SelectStatus'
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Loader2 } from 'lucide-react'
+
 import {
 	FaUser,
 	FaCalendar,
@@ -11,57 +13,63 @@ import {
 	FaMountain,
 	FaExclamationTriangle,
 	FaLaugh,
-	FaMagic,
 	FaFighterJet,
 	FaSearch,
+	FaSmile,
 } from 'react-icons/fa'
 import { FaFilm, FaMusic, FaBook, FaHeart } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import TimeInput from '@/components/TImeInput'
-import { FaBiohazard, FaChild, FaHatCowboy, FaLandmark, FaTv, FaUserSecret } from 'react-icons/fa6'
+import {
+	FaBiohazard,
+	FaChild,
+	FaEye,
+	FaHatCowboy,
+	FaMicrophone,
+	FaNewspaper,
+	FaSoap,
+} from 'react-icons/fa6'
 import { apiUrl } from '@/lib/Constants'
 const genreId: Record<number, string> = {
-	28: 'Action',
-	12: 'Adventure',
+	10759: 'Action & Adventure',
 	16: 'Animation',
 	35: 'Comedy',
 	80: 'Crime',
 	99: 'Documentary',
 	18: 'Drama',
 	10751: 'Family',
-	14: 'Fantasy',
-	36: 'History',
-	27: 'Horror',
-	10402: 'Music',
+	10762: 'Kids',
 	9648: 'Mystery',
-	10749: 'Romance',
-	878: 'Sci-Fi',
-	10770: 'TV Movie',
-	53: 'Thriller',
-	10752: 'War',
+	10763: 'News',
+	10764: 'Reality',
+	10765: 'Sci-Fi & Fantasy',
+	10766: 'Soap',
+	10767: 'Talk',
+	10768: 'War & Politics',
 	37: 'Western',
 }
 
 const genreIcons: Record<string, JSX.Element> = {
-	Action: <FaBullhorn className="text-red-600" />,
+	'Action & Adventure': <FaBullhorn className="text-red-600" />,
 	Comedy: <FaLaugh className="text-yellow-500" />,
 	Drama: <FaTheaterMasks className="text-blue-600" />,
 	Horror: <FaGhost className="text-purple-600" />,
 	Romance: <FaHeart className="text-pink-600" />,
 	Music: <FaMusic className="text-teal-600" />,
-	'Sci-Fi': <FaBiohazard className="text-teal-600" />,
+	'Sci-Fi & Fantasy': <FaBiohazard className="text-teal-600" />,
 	Adventure: <FaMountain className="text-green-600" />,
 	Documentary: <FaBook className="text-brown-600" />,
 	Thriller: <FaExclamationTriangle className="text-orange-600" />,
 	Animation: <FaFilm className="text-yellow-700" />,
 	Family: <FaChild className="text-purple-500" />,
-	Fantasy: <FaMagic className="text-green-500" />,
-	History: <FaLandmark className="text-gray-600" />,
-	Crime: <FaUserSecret className="text-red-800" />,
-	War: <FaFighterJet className="text-gray-500" />,
-	Western: <FaHatCowboy className="text-brown-600" />,
+	Kids: <FaSmile className="text-blue-400" />,
 	Mystery: <FaSearch className="text-blue-800" />,
-	'TV Movie': <FaTv className="text-gray-400" />,
+	News: <FaNewspaper className="text-gray-400" />,
+	Reality: <FaEye className="text-pink-700" />,
+	Soap: <FaSoap className="text-blue-500" />,
+	Talk: <FaMicrophone className="text-green-600" />,
+	'War & Politics': <FaFighterJet className="text-gray-500" />,
+	Western: <FaHatCowboy className="text-brown-600" />,
 }
 
 const GenresParser: React.FC<{ genreIds: number[] }> = ({ genreIds }) => {
@@ -96,7 +104,17 @@ const SeriesSpotlight: React.FC = () => {
 				const response = await fetch(`${apiUrl}media/tvseries/${id}`)
 				if (response.ok) {
 					const data = await response.json()
-					console.log(data)
+					if (Object.keys(data).length === 0) {
+						return (
+							<div className="text-red-500">
+								{movieData.error === 'Invalid ID' && 'Invalid ID in the URL.'}
+								{movieData.error === 'Empty response' && 'No data found for this ID.'}
+								{movieData.error === 'Failed to fetch' && 'Failed to fetch movie data.'}
+								{movieData.error === 'Error fetching data' &&
+									'An error occurred while fetching data.'}
+							</div>
+						)
+					}
 					setMovieData(data)
 				} else {
 					console.error('Failed to fetch movie data')
@@ -115,7 +133,11 @@ const SeriesSpotlight: React.FC = () => {
 	}
 
 	if (!movieData) {
-		return <div>Loading...</div>
+		return (
+			<div className="flex flex-col justify-center items-center h-[80vh] md:flex-row w-full">
+				<Loader2 className="animate-spin" size={60} />
+			</div>
+		)
 	}
 
 	return (
