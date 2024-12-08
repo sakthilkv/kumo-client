@@ -80,7 +80,7 @@ const GenresParser: React.FC<{ genreIds: number[] }> = ({ genreIds }) => {
 	)
 }
 
-const MovieSpotlight: React.FC = () => {
+const SeriesSpotlight: React.FC = () => {
 	const [movieData, setMovieData] = useState<any>(null)
 	const [selectedStatus, setSelectedStatus] = useState<string>('')
 	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
@@ -93,7 +93,7 @@ const MovieSpotlight: React.FC = () => {
 		const fetchMovieData = async () => {
 			if (!id) return
 			try {
-				const response = await fetch(`${apiUrl}media/movie/${id}`)
+				const response = await fetch(`${apiUrl}media/tvseries/${id}`)
 				if (response.ok) {
 					const data = await response.json()
 					console.log(data)
@@ -181,4 +181,4 @@ const MovieSpotlight: React.FC = () => {
 	)
 }
 
-export default MovieSpotlight
+export default SeriesSpotlight

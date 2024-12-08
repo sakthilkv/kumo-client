@@ -4,6 +4,7 @@ import Header from './components/header'
 import Dashboard from '@/pages/Dashboard'
 import Search from '@/pages/Search'
 import MovieSpotlight from './pages/MovieSpotlight'
+import SeriesSpotlight from './pages/SeriesSpotlight'
 
 function App() {
 	return (
@@ -13,9 +14,11 @@ function App() {
 				<Route path="/dashboard" element={<Dashboard />} />
 				<Route path="/search" element={<Search />} />
 				<Route path="/movie/*" element={<MovieSpotlight />} />
+				<Route path="/tvseries/*" element={<SeriesSpotlight />} />
 			</Routes>
 		</>
 	)
 }
 
 export default App
+	
