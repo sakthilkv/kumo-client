@@ -19,7 +19,8 @@ import { FaFilm, FaMusic, FaBook, FaHeart } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import TimeInput from '@/components/TImeInput'
 import { FaBiohazard, FaChild, FaHatCowboy, FaLandmark, FaTv, FaUserSecret } from 'react-icons/fa6'
-import { apiUrl } from '@/lib/Constants'
+import { apiUrl, UserID } from '@/lib/Constants'
+import { Loader2 } from 'lucide-react'
 const genreId: Record<number, string> = {
 	28: 'Action',
 	12: 'Adventure',
@@ -84,7 +85,9 @@ const MovieSpotlight: React.FC = () => {
 	const [movieData, setMovieData] = useState<any>(null)
 	const [selectedStatus, setSelectedStatus] = useState<string>('')
 	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
+	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [movieId, setMovieId] = useState<string | null>(null)
+	const [isSaved, setIsSaved] = useState(false)
 
 	useEffect(() => {
 		const id = window.location.href.split('/').filter(Boolean).pop()
@@ -93,7 +96,13 @@ const MovieSpotlight: React.FC = () => {
 		const fetchMovieData = async () => {
 			if (!id) return
 			try {
-				const response = await fetch(`${apiUrl}media/movie/${id}`)
+				const response = await fetch(`${apiUrl}media/movie/${id}`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						uid: UserID,
+					},
+				})
 				if (response.ok) {
 					const data = await response.json()
 					console.log(data)
@@ -111,11 +120,45 @@ const MovieSpotlight: React.FC = () => {
 
 	const handleStatusChange = (value: string) => {
 		setSelectedStatus(value)
-		setIsButtonDisabled(value === 'none')
+		setIsButtonDisabled(value === movieData.status)
+	}
+
+	const handleSaveClick = async () => {
+		if (!movieId) return
+		setIsLoading(true)
+		setIsButtonDisabled(true)
+
+		try {
+			const response = await fetch(
+				`${apiUrl}user/add_media?media_id=${movieId}&media_type=${movieData.media_type}&status=${selectedStatus}`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						uid: UserID,
+					},
+				},
+			)
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`)
+			}
+			const data = await response.json()
+			console.log('Save API Response:', data)
+			setIsSaved(true)
+		} catch (error) {
+			console.error('Error while saving:', error)
+		} finally {
+			setIsLoading(false)
+			setIsButtonDisabled(false)
+		}
 	}
 
 	if (!movieData) {
-		return <div>Loading...</div>
+		return (
+			<div className="flex flex-col justify-center items-center h-[80vh] md:flex-row w-full">
+				<Loader2 className="animate-spin" size={60} />
+			</div>
+		)
 	}
 
 	return (
@@ -159,21 +202,28 @@ const MovieSpotlight: React.FC = () => {
 					</div>
 
 					<div className="flex flex-col gap-3 mt-3 border rounded-lg w-fit p-3">
-						<div className="flex flex-row items-center justify-between gap-1">
+						<div className="flex flex-row items-center justify-between gap-3">
 							<span>Status:</span>
-							<Select defaultValue="none" onValueChange={handleStatusChange}>
+							<Select defaultValue={movieData.status} onValueChange={handleStatusChange}>
 								<SelectTrigger className="w-fit font-medium px-2 text-sm border">
 									<SelectValue placeholder="Select" />
 								</SelectTrigger>
 								<SelectStatus />
 							</Select>
 						</div>
-						<TimeInput
-							onTimeChange={function (time: string): void {
-								throw new Error('Function not implemented.')
-							}}
-						/>
-						<Button disabled={isButtonDisabled}>Save</Button>
+						<Button
+							onClick={handleSaveClick}
+							disabled={isButtonDisabled}
+							className="flex items-center justify-center gap-2"
+						>
+							{isLoading ? (
+								<Loader2 className="animate-spin" size={18} />
+							) : isSaved ? (
+								'Saved'
+							) : (
+								'Save'
+							)}
+						</Button>
 					</div>
 				</div>
 			</div>

@@ -19,7 +19,7 @@ import {
 } from 'react-icons/fa'
 import { FaFilm, FaMusic, FaBook, FaHeart } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
-import TimeInput from '@/components/TImeInput'
+
 import {
 	FaBiohazard,
 	FaChild,
@@ -88,7 +88,7 @@ const GenresParser: React.FC<{ genreIds: number[] }> = ({ genreIds }) => {
 	)
 }
 
-const SeriesSpotlight: React.FC = () => {
+const AnimeSpotlight: React.FC = () => {
 	const [movieData, setMovieData] = useState<any>(null)
 	const [selectedStatus, setSelectedStatus] = useState<string>('')
 	const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
@@ -103,7 +103,7 @@ const SeriesSpotlight: React.FC = () => {
 		const fetchMovieData = async () => {
 			if (!id) return
 			try {
-				const response = await fetch(`${apiUrl}media/tvseries/${id}`, {
+				const response = await fetch(`${apiUrl}media/anime/${id}`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -248,4 +248,4 @@ const SeriesSpotlight: React.FC = () => {
 	)
 }
 
-export default SeriesSpotlight
+export default AnimeSpotlight

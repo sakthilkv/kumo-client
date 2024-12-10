@@ -5,7 +5,7 @@ import Dashboard from '@/pages/Dashboard'
 import Search from '@/pages/Search'
 import MovieSpotlight from './pages/MovieSpotlight'
 import SeriesSpotlight from './pages/SeriesSpotlight'
-
+import AnimeSpotlight from './pages/AnimeSpotlight'
 function App() {
 	return (
 		<>
@@ -15,6 +15,7 @@ function App() {
 				<Route path="/search" element={<Search />} />
 				<Route path="/movie/*" element={<MovieSpotlight />} />
 				<Route path="/tvseries/*" element={<SeriesSpotlight />} />
+				<Route path="/anime/*" element={<AnimeSpotlight />} />
 			</Routes>
 		</>
 	)
